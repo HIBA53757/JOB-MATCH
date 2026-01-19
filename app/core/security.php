@@ -25,7 +25,6 @@ class Security
     public function verifyCsrfToken(string $token): bool
     {
         $sessionToken = Session::getInstance()->get('_csrf_token');
-        
         if (!$sessionToken || !$token) {
             return false;
         }

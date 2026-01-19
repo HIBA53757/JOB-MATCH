@@ -9,7 +9,7 @@ class View
 
 
 
-     private static ?Environment $twig = null;
+    private static ?Environment $twig = null;
 
     public static function render(string $template, array $data = []): void
     {
@@ -24,6 +24,12 @@ class View
         }
 
         echo self::$twig->render($template . '.twig', $data);
+    }
+
+    public static function redirect(string $url): void
+    {
+        header("Location: $url");
+        exit();
     }
 
     
