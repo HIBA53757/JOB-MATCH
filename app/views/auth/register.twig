@@ -1,0 +1,30 @@
+{% extends "./partials/layout.twig" %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+{% if errors is not empty %}
+    <div class="errors">
+        {% for field, messages in errors %}
+            {% for message in messages %}
+                <p class="error">{{ message }}</p>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+
+<form action="/register" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+    <input name="full_name" type="text" placeholder="First name">
+    <input name="email" type="email" placeholder="Email">
+    <input name="password" type="password" placeholder="Password">
+    <input name="password_confirmation" type="password" placeholder="confirmer Password">
+
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>
+{% endblock %}
