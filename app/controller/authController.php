@@ -15,35 +15,6 @@ class AuthController extends baseController
         $this->user = new user();
     }
 
-    public function find($id)
-    {
-        // echo "test. ID = $id";
-
-        $data = [
-            ["name" => "hiba"],
-            ["name" => "yassmin"],
-            ["name" => "souad"],
-            ["name" => "rim"],
-            ["name" => "nada"],
-        ];
-
-        $this->view("user", ["users" => $data, "id" => $id]);
-    }
-
-    //create test
-    public function createTest()
-    {
-        $user = new user();
-
-        $user->create([
-            'name' => 'Test User',
-            'email' => 'test@mail.com',
-            'password' => '123456'
-        ]);
-
-        echo "User success!";
-    }
-
     public function checkRole(){
         if($this->session->get('user_role') === "ADMIN"){
             $this->view->redirect('admin/dashboard');
