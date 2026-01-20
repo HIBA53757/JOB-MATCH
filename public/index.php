@@ -13,6 +13,8 @@ $router->post("/register" , [AuthController::class , "createUser"]);
 $router->get("/login" , [AuthController::class , "renderlogin"]);
 $router->post("/login" , [AuthController::class , "loginCheck"]);
 
+$router->get("/logout" , [AuthController::class , "logout"]);
+
 $router->get("/admin/dashboard" , [AuthController::class , "renderDashboard"]);
 $router->get("/admin/posts" , [AuthController::class , "renderPosts"]);
 $router->get("/admin/companies" , [AuthController::class , "renderCompanies"]);
@@ -29,6 +31,8 @@ $router->get("/test", [AuthController::class, "allTest"]);
 $router->get("/404", function(){
     echo "404";
 });
+
+
 
 
 $router->get('/test-all', callback: [AuthController::class, 'findByIdTest']);
