@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin | YouCode Job Dating{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-64 bg-blue-900 text-white flex flex-col">
+            <div class="h-16 flex items-center justify-center text-xl font-bold border-b border-blue-800">
+                YouCode Jobs <span class="text-xs bg-yellow-400 text-blue-900 px-2 py-1 rounded ml-2">Admin</span>
+            </div>
+            <nav class="flex-1 px-2 py-4 space-y-2">
+                <a href="/admin/dashboard" class="flex items-center px-4 py-2 hover:bg-blue-800 rounded">
+                    <i class="fas fa-tachometer-alt w-6"></i> Dashboard
+                </a>
+                <a href="/admin/posts" class="flex items-center px-4 py-2 hover:bg-blue-800 rounded">
+                    <i class="fas fa-briefcase w-6"></i> Annonces
+                </a>
+                <a href="/admin/companies" class="flex items-center px-4 py-2 hover:bg-blue-800 rounded">
+                    <i class="fas fa-building w-6"></i> Entreprises
+                </a>
+                <a href="/admin/users" class="flex items-center px-4 py-2 hover:bg-blue-800 rounded">
+                    <i class="fas fa-users w-6"></i> Apprenants
+                </a>
+            </nav>
+            <div class="p-4 border-t border-blue-800">
+                <a href="/logout" class="flex items-center text-red-300 hover:text-white">
+                    <i class="fas fa-sign-out-alt w-6"></i> Déconnexion
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+            <div class="container mx-auto px-6 py-8">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

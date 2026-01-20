@@ -13,8 +13,13 @@ $router->post("/register" , [AuthController::class , "createUser"]);
 $router->get("/login" , [AuthController::class , "renderlogin"]);
 $router->post("/login" , [AuthController::class , "loginCheck"]);
 
-$router->get("/dashboard" , [AuthController::class , "renderDashboard"]);
-$router->get("/home" , [AuthController::class , "renderHome"]);
+$router->get("/admin/dashboard" , [AuthController::class , "renderDashboard"]);
+$router->get("/admin/posts" , [AuthController::class , "renderPosts"]);
+$router->get("/admin/companies" , [AuthController::class , "renderCompanies"]);
+$router->get("/admin/users" , [AuthController::class , "renderUsers"]);
+$router->get("/user/home" , [AuthController::class , "renderHome"]);
+$router->get("/user/postDetails" , [AuthController::class , "renderPostDetails"]);
+$router->get("/user/companyDetails" , [AuthController::class , "renderCompanyDetails"]);
 
 
 $router->get("/user/{id}", [AuthController::class, "find"]);

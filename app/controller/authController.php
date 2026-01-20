@@ -46,9 +46,9 @@ class AuthController extends baseController
 
     public function checkRole(){
         if($this->session->get('user_role') === "ADMIN"){
-            $this->view->redirect('/dashboard');
+            $this->view->redirect('admin/dashboard');
         }else{
-            $this->view->redirect('/home');
+            $this->view->redirect('user/home');
         }
     }
 
@@ -189,14 +189,44 @@ class AuthController extends baseController
         if($this->session->get('user_role') !== "ADMIN"){
             $this->view->redirect('/login');
         }
-        $this->render("back/dashboard", ["title" => "welcome to admin office"]);
+        $this->render("back/dashboard", []);
+    }
+    public function renderPosts(){
+        if($this->session->get('user_role') !== "ADMIN"){
+            $this->view->redirect('/login');
+        }
+        $this->render("back/Posts", []);
+    }
+    public function renderCompanies(){
+        if($this->session->get('user_role') !== "ADMIN"){
+            $this->view->redirect('/login');
+        }
+        $this->render("back/Companies", []);
+    }
+    public function renderUsers(){
+        if($this->session->get('user_role') !== "ADMIN"){
+            $this->view->redirect('/login');
+        }
+        $this->render("back/Users", []);
     }
 
     public function renderHome(){
         if($this->session->get('user_role') !== "APPRENANT"){
             $this->view->redirect('/login');
         }
-        $this->render("front/home", ["title" => "welcome to user office"]);
+        $this->render("front/home", []);
+    }
+    public function renderPostDetails(){
+        if($this->session->get('user_role') !== "APPRENANT"){
+            $this->view->redirect('/login');
+        }
+        $this->render("front/postDetails", []);
+    }
+    public function renderCompanyDetails(){
+        if($this->session->get('user_role') !== "APPRENANT"){
+            $this->view->redirect('/login');
+        }
+        $this->render("front/companyDetails", []);
     }
 
 }
