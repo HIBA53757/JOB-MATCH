@@ -56,6 +56,10 @@ class AuthController extends baseController
 
     public function renderlogin()
     {
+        $user_id = $this->session->get("user_id");
+        if($user_id){
+            $this->checkRole();
+        }
         $csrfToken = $this->security->generateCsrfToken();
         $this->render("auth/login", ["title" => "welcome to login page",
                                 "csrf_token" => $csrfToken]);
@@ -63,6 +67,10 @@ class AuthController extends baseController
 
     public function renderRegister()
     {
+        $user_id = $this->session->get("user_id");
+        if($user_id){
+            $this->checkRole();
+        }
         $csrfToken = $this->security->generateCsrfToken();
         $this->render("auth/register", ["title" => "welcome to register page" ,
                                    "csrf_token" => $csrfToken]);
@@ -185,6 +193,30 @@ class AuthController extends baseController
    
     }
 
+    public function logout()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
+            );
+        }
+        
+        $this->session->destroy();
+
+        $this->view->redirect('/login');
+        exit;
+    }
     public function renderDashboard(){
         if($this->session->get('user_role') !== "ADMIN"){
             $this->view->redirect('/login');
