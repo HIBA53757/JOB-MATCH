@@ -1,0 +1,58 @@
+{% extends "layouts/layout_front.html.twig" %}
+
+{% block content %}
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden max-w-4xl mx-auto">
+        <div class="bg-blue-50 p-8 border-b border-gray-100">
+            <div class="flex items-center gap-6">
+                <img src="https://ui-avatars.com/api/?name=Capgemini&size=128" class="w-24 h-24 rounded shadow-sm bg-white" alt="Logo">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">Développeur Backend Laravel</h1>
+                    <div class="text-lg text-gray-600 mt-2 flex gap-4">
+                        <a href="/company/1" class="hover:underline font-semibold text-blue-600">Capgemini</a>
+                        <span>•</span>
+                        <span>Casablanca (Hybride)</span>
+                        <span>•</span>
+                        <span class="text-green-600 font-bold">CDI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="md:col-span-2 space-y-6">
+                <section>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Description du poste</h3>
+                    <div class="text-gray-600 leading-relaxed">
+                        <p>En tant que développeur Backend, vous intégrerez une squad agile...</p>
+                        </div>
+                </section>
+
+                <section>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Compétences requises</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>Maîtrise de PHP 8+ et Laravel</li>
+                        <li>Bonne connaissance de MySQL</li>
+                        <li>Expérience avec les API REST</li>
+                        <li>Git / GitHub</li>
+                    </ul>
+                </section>
+            </div>
+
+            <div class="md:col-span-1">
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <h4 class="font-bold text-gray-700 mb-4">Postuler</h4>
+                    <p class="text-sm text-gray-500 mb-4">Intéressé par cette opportunité ? Envoyez votre CV directement.</p>
+                    <a href="mailto:rh@capgemini.com" class="block w-full text-center bg-blue-600 text-white font-bold py-3 rounded hover:bg-blue-700 transition">
+                        Postuler maintenant
+                    </a>
+                    
+                    <hr class="my-6 border-gray-300">
+                    
+                    <h4 class="font-bold text-gray-700 mb-2">À propos de l'entreprise</h4>
+                    <p class="text-sm text-gray-600 mb-3">Leader mondial du conseil et de la transformation numérique.</p>
+                    <a href="/company/1" class="text-blue-600 text-sm font-semibold hover:underline">Voir la page entreprise &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
