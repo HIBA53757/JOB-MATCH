@@ -1,38 +1,43 @@
-CREATE DATABASE  IF NOT EXISTS router;
-USE router;
---@block
+CREATE DATABASE IF NOT EXISTS YouCodeJobDating;
+USE YouCodeJobDating;
+
 
 CREATE TABLE users (
     `id` INT PRIMARY KEY AUTO_INCREMENT,
-    `full_name` VARCHAR(255)  NOT NULL,
+    `full_name` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) UNIQUE NOT NULL,
-    `role` ENUM('ADMIN','APPRENANT') NOT NULL,
     `password_hash` VARCHAR(255) NOT NULL,
+    `role` ENUM('ADMIN', 'APPRENANT') NOT NULL DEFAULT 'APPRENANT',
+    `specialization` VARCHAR(100) NULL,
+    `promotion` VARCHAR(50) NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---@block
-CREATE TABLE `entreprise` (
+CREATE TABLE `company` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(255) NOT NULL,
-    `secteur` VARCHAR(255),
-    `localisation` VARCHAR(255),
-    `email` VARCHAR(255),
-    `telephone` VARCHAR(50)
+    `secteur` VARCHAR(255) NOT NULL,
+    `logo` VARCHAR(255) DEFAULT 'default_logo.png',
+    `location` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(255) UNIQUE NOT NULL,
+    `telephone` VARCHAR(50),
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---@block
+
 CREATE TABLE `annonce` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `title` VARCHAR(255) NOT NULL,
-    `description` TEXT,
-    `typeContrat` VARCHAR(100),
-    `localisation` VARCHAR(255),
-    `image` VARCHAR(255),
-    `competences` TEXT,
+    `description` TEXT NOT NULL,
+    `contract_type` ENUM('CDI', 'CDD', 'Stage', 'Anapec', 'Freelance') NOT NULL, -- استخدام ENUM أفضل للفلترة
+    `location` VARCHAR(255) NOT NULL,
+    `image` VARCHAR(255) NULL,
+    `skills` TEXT NOT NULL,
     `deleted` BOOLEAN DEFAULT FALSE,
-    `dateCreation` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `dateUpdate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `entreprise_id` INT,
-    FOREIGN KEY (`entreprise_id`) REFERENCES `entreprise`(`id`) ON DELETE CASCADE
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `company_id` INT NOT NULL,
+    
+    
+    FOREIGN KEY (`company_id`) REFERENCES `company`(`id`) ON DELETE CASCADE
 );
