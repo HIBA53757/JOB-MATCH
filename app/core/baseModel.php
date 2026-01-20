@@ -69,7 +69,7 @@ abstract class baseModel
     {
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE {$column} = ?");
         $stmt->execute([$value]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
      public function count(): int  // count the total

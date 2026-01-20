@@ -7,16 +7,14 @@ include __DIR__ . '/../vendor/autoload.php';
 
 $router = Router::getRouter();
 
+$router->get("/register" , [AuthController::class , "renderRegister"]);
+$router->post("/register" , [AuthController::class , "createUser"]);
 
-$router->get("/user/{id}/{user}", function($id, $user){
-    include __DIR__ . '/../views/user.php';
-    
-});
+$router->get("/login" , [AuthController::class , "renderlogin"]);
+$router->post("/login" , [AuthController::class , "loginCheck"]);
 
-$router->get("/login", function(){
-    include __DIR__ . '/../views/login.php';
-    
-});
+$router->get("/dashboard" , [AuthController::class , "renderDashboard"]);
+$router->get("/home" , [AuthController::class , "renderHome"]);
 
 
 $router->get("/user/{id}", [AuthController::class, "find"]);
@@ -29,7 +27,6 @@ $router->get("/404", function(){
 
 
 $router->get('/test-all', callback: [AuthController::class, 'findByIdTest']);
-$router->get('/twig', callback: [AuthController::class, 'testTwifg']);
 
 $router->post("/add", function(){
     print_r($_POST);

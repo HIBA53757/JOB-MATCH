@@ -49,11 +49,6 @@ class Validator
                     $this->addError($field, "Le champ {$field} doit être un email valide");
                 }
                 break;
-            case 'unique':
-                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                    $this->addError($field, "Le champ {$field} doit être un email unique");
-                }
-                break;
 
             case 'min':
                 if (strlen($value) < (int)$parameter) {
@@ -141,7 +136,7 @@ class Validator
     {
         try {
             $db = Database::get_instance();
-            $stmt = $db->prepare("SELECT COUNT(*) FROM {$table} WHERE {$column} = ?");
+            $stmt = $db->connection()->prepare("SELECT COUNT(*) FROM {$table} WHERE {$column} = ?");
             $stmt->execute([$value]);
             return $stmt->fetchColumn() > 0;
         } catch (\Exception $e) {
