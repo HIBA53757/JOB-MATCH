@@ -56,7 +56,7 @@ class AuthController extends baseController
 
             if (!$this->security->verifyCSRFToken($tokenFromPost)) {
                 $errors =  ["csrf" => ["csrf token non valid!"]];
-                $this->render("auth/register", ["title" => "welcome to register page" ,
+                $this->render("auth/register", [
                                    "csrf_token" => $csrfToken,
                                    "errors" => $errors]);
                 die();
@@ -77,7 +77,7 @@ class AuthController extends baseController
 
             if(!$this->validator->validate($data , $rules)){
                 $errors = $this->validator->errors();
-                $this->render("auth/register", ["title" => "welcome to register page" ,
+                $this->render("auth/register", [
                                    "csrf_token" => $csrfToken,
                                    "errors" => $errors]);
                 die();
@@ -106,7 +106,7 @@ class AuthController extends baseController
 
             if (!$this->security->verifyCSRFToken($tokenFromPost)) {
                 $errors =  ["csrf" => ["csrf token non valid!"]];
-                $this->render("auth/login", ["title" => "welcome to register page" ,
+                $this->render("auth/login", [
                                    "csrf_token" => $csrfToken,
                                    "errors" => $errors]);
                 die();
@@ -124,7 +124,7 @@ class AuthController extends baseController
 
             if(!$this->validator->validate($data , $rules)){
                 $errors = $this->validator->errors();
-                $this->render("auth/login", ["title" => "welcome to login page" ,
+                $this->render("auth/login", [
                                    "csrf_token" => $csrfToken,
                                    "errors" => $errors]);
                 die();
@@ -133,7 +133,7 @@ class AuthController extends baseController
             $results = $this->user->where('email' , $_POST['email']);
             if(count($results) === 0){
                 $errors =  ["email" => ["Adresse e-mail introuvable!"]];
-                $this->render("auth/login", ["title" => "welcome to login page" ,
+                $this->render("auth/login", [
                                    "csrf_token" => $csrfToken,
                                    "errors" => $errors]);
                 die();
@@ -145,7 +145,7 @@ class AuthController extends baseController
             
             if(!$this->security->verifyPassword($password , $dbPassword)){
                 $errors =  ["password" => ["Mot de passe incorrect!"]];
-                $this->render("auth/login", ["title" => "welcome to login page" ,
+                $this->render("auth/login", [
                                    "csrf_token" => $csrfToken,
                                    "errors" => $errors]);
                 die();
@@ -200,24 +200,12 @@ class AuthController extends baseController
         }
         $this->render("back/Posts", []);
     }
-    public function renderCompanies(){
-        if($this->session->get('user_role') !== "ADMIN"){
-            $this->view->redirect('/login');
-        }
-        $this->render("back/Companies", []);
-    }
+    
     public function renderUsers(){
         if($this->session->get('user_role') !== "ADMIN"){
             $this->view->redirect('/login');
         }
         $this->render("back/Users", []);
-    }
-
-    public function renderCompanyForm(){
-        if($this->session->get('user_role') !== "ADMIN"){
-            $this->view->redirect('/login');
-        }
-        $this->render("back/companyForm", []);
     }
 
     public function renderHome(){
