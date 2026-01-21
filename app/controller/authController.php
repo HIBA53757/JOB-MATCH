@@ -58,7 +58,8 @@ class AuthController extends baseController
                 $errors =  ["csrf" => ["csrf token non valid!"]];
                 $this->render("auth/register", [
                                    "csrf_token" => $csrfToken,
-                                   "errors" => $errors]);
+                                   "errors" => $errors,
+                                   "old" => $_POST]);
                 die();
             }
 
@@ -79,7 +80,8 @@ class AuthController extends baseController
                 $errors = $this->validator->errors();
                 $this->render("auth/register", [
                                    "csrf_token" => $csrfToken,
-                                   "errors" => $errors]);
+                                   "errors" => $errors,
+                                   "old" => $data]);
                 die();
             }
             
@@ -108,7 +110,8 @@ class AuthController extends baseController
                 $errors =  ["csrf" => ["csrf token non valid!"]];
                 $this->render("auth/login", [
                                    "csrf_token" => $csrfToken,
-                                   "errors" => $errors]);
+                                   "errors" => $errors,
+                                   "old" => $_POST]);
                 die();
             }
 
@@ -126,7 +129,8 @@ class AuthController extends baseController
                 $errors = $this->validator->errors();
                 $this->render("auth/login", [
                                    "csrf_token" => $csrfToken,
-                                   "errors" => $errors]);
+                                   "errors" => $errors,
+                                   "old" => $data]);
                 die();
             }
 
@@ -135,7 +139,8 @@ class AuthController extends baseController
                 $errors =  ["email" => ["Adresse e-mail introuvable!"]];
                 $this->render("auth/login", [
                                    "csrf_token" => $csrfToken,
-                                   "errors" => $errors]);
+                                   "errors" => $errors,
+                                   "old" => $data]);
                 die();
             }
 
@@ -147,7 +152,8 @@ class AuthController extends baseController
                 $errors =  ["password" => ["Mot de passe incorrect!"]];
                 $this->render("auth/login", [
                                    "csrf_token" => $csrfToken,
-                                   "errors" => $errors]);
+                                   "errors" => $errors,
+                                   "old" => $data]);
                 die();
             }
 
