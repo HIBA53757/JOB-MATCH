@@ -2,6 +2,7 @@
 
 use app\core\Router;
 use app\controller\AuthController;
+use app\controller\back\CompanyController;
 
 include __DIR__ . '/../vendor/autoload.php';
 
@@ -19,6 +20,10 @@ $router->get("/admin/dashboard" , [AuthController::class , "renderDashboard"]);
 $router->get("/admin/posts" , [AuthController::class , "renderPosts"]);
 $router->get("/admin/companies" , [AuthController::class , "renderCompanies"]);
 $router->get("/admin/users" , [AuthController::class , "renderUsers"]);
+
+$router->get("/admin/company/create" , [AuthController::class , "renderCompanyForm"]);
+$router->post("/admin/company/save" , [CompanyController::class , "createCompany"]);
+
 $router->get("/user/home" , [AuthController::class , "renderHome"]);
 $router->get("/user/postDetails" , [AuthController::class , "renderPostDetails"]);
 $router->get("/user/companyDetails" , [AuthController::class , "renderCompanyDetails"]);

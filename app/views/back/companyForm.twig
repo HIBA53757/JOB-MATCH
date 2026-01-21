@@ -1,0 +1,138 @@
+{% extends "layouts/layout_back.html.twig" %}
+
+{% block title %}Gestion Entreprise - YouCode Jobs{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">
+            {% if company.id %} Modifier l'entreprise {% else %} Ajouter une nouvelle entreprise {% endif %}
+        </h2>
+        <a href="/admin/companies" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            <i class="fas fa-arrow-left mr-2"></i> Retour
+        </a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+        <div class="p-8">
+
+            {% if errors is not empty %}
+                <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-sm">
+                    <p class="font-bold mb-1"><i class="fas fa-exclamation-triangle mr-2"></i> Veuillez corriger les erreurs suivantes :</p>
+                    <ul class="list-disc list-inside text-sm">
+                        {% for field, messages in errors %}
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <form action="{{ action|default('/admin/company/save') }}" method="POST" enctype="multipart/form-data">
+                
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                {% if company.id %}
+                    <input type="hidden" name="id" value="{{ company.id }}">
+                {% endif %}
+
+                <h3 class="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">Informations Générales</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nom de l'entreprise <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" id="name" value="{{ old.name|default(company.name) }}" 
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" 
+                               placeholder="Ex: Capgemini" >
+                    </div>
+
+                    <div>
+                        <label for="secteur" class="block text-gray-700 text-sm font-bold mb-2">Secteur d'activité <span class="text-red-500">*</span></label>
+                        <input type="text" name="secteur" id="secteur" value="{{ old.secteur|default(company.secteur) }}" 
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" 
+                               placeholder="Ex: Développement Web / Fintech" >
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-semibold text-gray-700 border-b pb-2 mb-4 mt-6">Coordonnées</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email Contact <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" id="email" value="{{ old.email|default(company.email) }}" 
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" 
+                               placeholder="contact@entreprise.com" >
+                        <p class="text-xs text-gray-500 mt-1">Doit être unique.</p>
+                    </div>
+
+                    <div>
+                        <label for="telephone" class="block text-gray-700 text-sm font-bold mb-2">Téléphone</label>
+                        <input type="tel" name="telephone" id="telephone" value="{{ old.telephone|default(company.telephone) }}" 
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" 
+                               placeholder="+212 6 00 00 00 00">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label for="location" class="block text-gray-700 text-sm font-bold mb-2">Localisation (Siège) <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <input type="text" name="location" id="location" value="{{ old.location|default(company.location) }}" 
+                                   class="w-full pl-10 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" 
+                                   placeholder="Ex: Casablanca, Technopark" >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-semibold text-gray-700 border-b pb-2 mb-4 mt-6">Image de Marque</h3>
+
+                <div class="mb-6">
+                    <label for="logo" class="block text-gray-700 text-sm font-bold mb-2">Logo de l'entreprise</label>
+                    
+                    <div class="flex items-center justify-center w-full">
+                        <label for="logo" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Cliquez pour uploader</span> ou glissez-déposez</p>
+                                <p class="text-xs text-gray-500">PNG, JPG ou GIF (MAX. 2MB)</p>
+                            </div>
+                            <input id="logo" name="logo" type="file" class="hidden" accept="image/*" />
+                        </label>
+                    </div>
+
+                    {% if company.logo and company.logo != 'default_logo.png' %}
+                        <div class="mt-4 flex items-center">
+                            <span class="text-sm text-gray-600 mr-4">Logo actuel :</span>
+                            <img src="/uploads/{{ company.logo }}" alt="Logo actuel" class="h-12 w-12 object-contain border rounded p-1">
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="flex items-center justify-end mt-8 pt-4 border-t border-gray-100">
+                    <button type="reset" class="text-gray-500 hover:text-gray-700 font-medium px-6 py-2 mr-4 transition">
+                        Annuler
+                    </button>
+                    <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-8 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition transform hover:-translate-y-0.5">
+                        <i class="fas fa-save mr-2"></i> Enregistrer
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Petit script pour afficher le nom du fichier sélectionné (UX)
+    document.getElementById('logo').addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name;
+        if (fileName) {
+            const label = this.parentElement.querySelector('p span');
+            label.textContent = "Fichier sélectionné : " + fileName;
+            label.classList.add('text-green-600');
+        }
+    });
+</script>
+{% endblock %}

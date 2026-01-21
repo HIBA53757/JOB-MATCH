@@ -213,6 +213,13 @@ class AuthController extends baseController
         $this->render("back/Users", []);
     }
 
+    public function renderCompanyForm(){
+        if($this->session->get('user_role') !== "ADMIN"){
+            $this->view->redirect('/login');
+        }
+        $this->render("back/companyForm", []);
+    }
+
     public function renderHome(){
         if($this->session->get('user_role') !== "APPRENANT"){
             $this->view->redirect('/login');
