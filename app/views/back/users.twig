@@ -14,14 +14,16 @@
                 </tr>
             </thead>
             <tbody>
+                {% for user in users %}
                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                    <td class="px-5 py-4 text-sm font-medium text-gray-900">Ahmed Alami</td>
-                    <td class="px-5 py-4 text-sm text-gray-500">ahmed@youcode.ma</td>
-                    <td class="px-5 py-4 text-sm text-gray-500">Promo 2024</td>
+                    <td class="px-5 py-4 text-sm font-medium text-gray-900">{{ user.full_name }}</td>
+                    <td class="px-5 py-4 text-sm text-gray-500">{{ user.email }}</td>
+                    <td class="px-5 py-4 text-sm text-gray-500">{{ user.promotion }}</td>
                     <td class="px-5 py-4 text-sm">
-                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">Fullstack PHP</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">{{ user.specialization }}</span>
                     </td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

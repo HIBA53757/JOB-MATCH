@@ -206,13 +206,6 @@ class AuthController extends baseController
         }
         $this->render("back/Posts", []);
     }
-    
-    public function renderUsers(){
-        if($this->session->get('user_role') !== "ADMIN"){
-            $this->view->redirect('/login');
-        }
-        $this->render("back/Users", []);
-    }
 
     public function renderHome(){
         if($this->session->get('user_role') !== "APPRENANT"){

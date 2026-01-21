@@ -1,0 +1,133 @@
+{% extends "back/layout.twig" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">
+            {{ announcement ? 'Modifier l\'Annonce' : 'Créer une Nouvelle Annonce' }}
+        </h1>
+
+        {# L'action change dynamiquement selon si on est en Create ou Edit #}
+        <form action="{{ action|default('/admin/announcement/create') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            
+            {# Protection CSRF #}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            {# Si c'est un Edit, on a besoin de l'ID #}
+            {% if announcement %}
+                <input type="hidden" name="id" value="{{ announcement.id }}">
+            {% endif %}
+
+            {# 1. Titre de l'annonce #}
+            <div>
+                <label for="title" class="block text-sm font-medium text-gray-700">Titre de l'offre</label>
+                <input type="text" name="title" id="title" 
+                       value="{{ old.title | default(announcement.title) }}"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                       placeholder="Ex: Développeur Fullstack PHP/Symfony">
+                {% if errors.title %}
+                    <p class="text-red-500 text-xs mt-1">{{ errors.title[0] }}</p>
+                {% endif %}
+            </div>
+
+            {# 2. Entreprise (Select Dynamique) #}
+            <div>
+                <label for="company_id" class="block text-sm font-medium text-gray-700">Entreprise</label>
+                <select name="company_id" id="company_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                    <option value="">Sélectionner une entreprise</option>
+                    {% for company in companies %}
+                        <option value="{{ company.id }}" 
+                            {{ (old.company_id == company.id or announcement.company_id == company.id) ? 'selected' : '' }}>
+                            {{ company.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if errors.company_id %}
+                    <p class="text-red-500 text-xs mt-1">{{ errors.company_id[0] }}</p>
+                {% endif %}
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {# 3. Type de Contrat (ENUM) #}
+                <div>
+                    <label for="contract_type" class="block text-sm font-medium text-gray-700">Type de Contrat</label>
+                    <select name="contract_type" id="contract_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        {% set types = ['CDI', 'CDD', 'Stage', 'Anapec', 'Freelance'] %}
+                        {% for type in types %}
+                            <option value="{{ type }}" 
+                                {{ (old.contract_type == type or announcement.contract_type == type) ? 'selected' : '' }}>
+                                {{ type }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {# 4. Localisation #}
+                <div>
+                    <label for="location" class="block text-sm font-medium text-gray-700">Localisation</label>
+                    <input type="text" name="location" id="location" 
+                           value="{{ old.location | default(announcement.location) }}"
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                     {% if errors.location %}
+                        <p class="text-red-500 text-xs mt-1">{{ errors.location[0] }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# 5. Compétences (Skills) #}
+            <div>
+                <label for="skills" class="block text-sm font-medium text-gray-700">Compétences requises</label>
+                <input type="text" name="skills" id="skills" 
+                       value="{{ old.skills | default(announcement.skills) }}"
+                       placeholder="Ex: PHP, SQL, Twig, Docker (séparés par des virgules)"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                 {% if errors.skills %}
+                    <p class="text-red-500 text-xs mt-1">{{ errors.skills[0] }}</p>
+                {% endif %}
+            </div>
+
+            {# 6. Image de l'annonce #}
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Image de l'offre</label>
+                
+                {% if announcement.image and announcement.image != 'default_logo.png' %}
+                    <div class="mb-2">
+                        <img src="/uploads/announcements/{{ announcement.image }}" alt="Current Image" class="h-20 w-20 object-cover rounded">
+                        <p class="text-xs text-gray-500">Image actuelle</p>
+                    </div>
+                {% endif %}
+
+                <input type="file" name="image" id="image" class="mt-1 block w-full text-sm text-gray-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-full file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-indigo-50 file:text-indigo-700
+                  hover:file:bg-indigo-100">
+                {% if errors.image %}
+                    <p class="text-red-500 text-xs mt-1">{{ errors.image[0] }}</p>
+                {% endif %}
+            </div>
+
+            {# 7. Description #}
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700">Description détaillée</label>
+                <textarea name="description" id="description" rows="5" 
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">{{ old.description | default(announcement.description) }}</textarea>
+                 {% if errors.description %}
+                    <p class="text-red-500 text-xs mt-1">{{ errors.description[0] }}</p>
+                {% endif %}
+            </div>
+
+            {# Boutons d'action #}
+            <div class="flex justify-end space-x-3">
+                <a href="/admin/announcements" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Annuler</a>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    {{ announcement ? 'Mettre à jour' : 'Publier l\'annonce' }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
