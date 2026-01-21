@@ -29,9 +29,9 @@ CREATE TABLE `annonce` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `title` VARCHAR(255) NOT NULL,
     `description` TEXT NOT NULL,
-    `contract_type` ENUM('CDI', 'CDD', 'Stage', 'Anapec', 'Freelance') NOT NULL, -- استخدام ENUM أفضل للفلترة
+    `contract_type` ENUM('CDI', 'CDD', 'Stage', 'Anapec', 'Freelance') NOT NULL,
     `location` VARCHAR(255) NOT NULL,
-    `image` VARCHAR(255) NULL,
+    `image` VARCHAR(255) DEFAULT 'default_logo.png',
     `skills` TEXT NOT NULL,
     `deleted` BOOLEAN DEFAULT FALSE,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,

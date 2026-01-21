@@ -18,11 +18,14 @@ $router->get("/logout" , [AuthController::class , "logout"]);
 
 $router->get("/admin/dashboard" , [AuthController::class , "renderDashboard"]);
 $router->get("/admin/posts" , [AuthController::class , "renderPosts"]);
-$router->get("/admin/companies" , [AuthController::class , "renderCompanies"]);
 $router->get("/admin/users" , [AuthController::class , "renderUsers"]);
 
-$router->get("/admin/company/create" , [AuthController::class , "renderCompanyForm"]);
+$router->get("/admin/companies" , [CompanyController::class , "renderCompanies"]);
+$router->get("/admin/company/create" , [CompanyController::class , "renderCompanyForm"]);
 $router->post("/admin/company/save" , [CompanyController::class , "createCompany"]);
+$router->post("/admin/company/edit" , [CompanyController::class , "renderCompanyFormEdit"]);
+$router->post("/admin/company/saveEdit" , [CompanyController::class , "editCompany"]);
+$router->post("/admin/company/delete" , [CompanyController::class , "deleteCompany"]);
 
 $router->get("/user/home" , [AuthController::class , "renderHome"]);
 $router->get("/user/postDetails" , [AuthController::class , "renderPostDetails"]);
