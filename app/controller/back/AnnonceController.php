@@ -15,5 +15,18 @@ class AnnonceController extends baseController
         $this->annonce = new Annonce();
     }
 
-    
+    public function renderPostForm(){
+        $csrfToken = $this->security->generateCsrfToken();
+        if($this->session->get('user_role') !== "ADMIN"){
+            $this->view->redirect('/login');
+        }
+        $this->render("back/PostForm", ["csrf_token" => $csrfToken]);
+    }
+
+    public function renderPosts(){
+        if($this->session->get('user_role') !== "ADMIN"){
+            $this->view->redirect('/login');
+        }
+        $this->render("back/Posts", []);
+    }
 }

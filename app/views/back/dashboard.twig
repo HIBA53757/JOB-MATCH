@@ -8,7 +8,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-gray-500 text-sm font-medium uppercase">Annonces Actives</p>
-                    <h4 class="text-2xl font-bold text-gray-800">42</h4>
+                    <h4 class="text-2xl font-bold text-gray-800">{{annonces_active|default(0)}}</h4>
                 </div>
                 <div class="bg-blue-100 text-blue-500 p-3 rounded-full"><i class="fas fa-briefcase"></i></div>
             </div>
@@ -17,7 +17,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-gray-500 text-sm font-medium uppercase">Entreprises</p>
-                    <h4 class="text-2xl font-bold text-gray-800">15</h4>
+                    <h4 class="text-2xl font-bold text-gray-800">{{company_num|default(0)}}</h4>
                 </div>
                 <div class="bg-green-100 text-green-500 p-3 rounded-full"><i class="fas fa-building"></i></div>
             </div>
@@ -26,7 +26,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-gray-500 text-sm font-medium uppercase">Apprenants</p>
-                    <h4 class="text-2xl font-bold text-gray-800">120</h4>
+                    <h4 class="text-2xl font-bold text-gray-800">{{users_num|default(0)}}</h4>
                 </div>
                 <div class="bg-purple-100 text-purple-500 p-3 rounded-full"><i class="fas fa-user-graduate"></i></div>
             </div>
@@ -35,7 +35,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-gray-500 text-sm font-medium uppercase">Archivées</p>
-                    <h4 class="text-2xl font-bold text-gray-800">8</h4>
+                    <h4 class="text-2xl font-bold text-gray-800">{{annonces_archive|default(0)}}</h4>
                 </div>
                 <div class="bg-gray-100 text-gray-500 p-3 rounded-full"><i class="fas fa-archive"></i></div>
             </div>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="flex space-x-4 mb-8">
-        <a href="/admin/posts/create" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 shadow">
+        <a href="/admin/post/create" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 shadow">
             <i class="fas fa-plus mr-2"></i> Nouvelle Annonce
         </a>
         <a href="/admin/company/create" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 shadow">
@@ -65,14 +65,24 @@
                 </tr>
             </thead>
             <tbody class="text-gray-700">
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="px-6 py-4">Développeur Fullstack PHP</td>
-                    <td class="px-6 py-4">Capgemini</td>
-                    <td class="px-6 py-4">20/02/2024</td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="text-blue-500 hover:text-blue-700"><i class="fas fa-eye"></i></a>
-                    </td>
-                </tr>
+                {% if annonces is not empty %}
+                    {% for annonce in annonces %}
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-6 py-4">{{annonce.title}}</td>
+                            <td class="px-6 py-4">{{annonce.name}}</td>
+                            <td class="px-6 py-4">{{annonce.created_at}}</td>
+                            <td class="px-6 py-4">
+                                <a href="#" class="text-blue-500 hover:text-blue-700"><i class="fas fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                            <p>Aucun message publié pour le moment</p>
+                            </td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>

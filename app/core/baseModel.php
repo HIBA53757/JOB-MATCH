@@ -65,17 +65,34 @@ abstract class baseModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-      public function where(string $column, $value): array  //find with a condition
+    public function where(string $column, $value): array  //find with a condition
     {
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE {$column} = ?");
         $stmt->execute([$value]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-     public function count(): int  // count the total
+    public function count(): int  // count the total
     {
         $stmt = $this->db->query("SELECT COUNT(*) FROM {$this->table}");
         return (int) $stmt->fetchColumn();
     }
+
+    public function countWhere($column , $value): int  // count the total but with condition
+    {
+        $stmt = $this->db->query("SELECT COUNT(*) FROM {$this->table} WHERE {$column} = '{$value}'");
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function findWithJoin($columns, $joinTable, $onCondition, $type) { // join dynamique
+
+    $stmt = $this->db->prepare("SELECT $columns FROM {$this->table} 
+                                $type JOIN $joinTable 
+                                ON $onCondition");
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+    
 
 }
