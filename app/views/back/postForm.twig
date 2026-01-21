@@ -1,4 +1,4 @@
-{% extends "back/layout.twig" %}
+{% extends "layouts/layout_back.html.twig" %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
@@ -121,7 +121,7 @@
 
             {# Boutons d'action #}
             <div class="flex justify-end space-x-3">
-                <a href="/admin/announcements" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Annuler</a>
+                <a href="/admin/posts" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Annuler</a>
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                     {{ announcement ? 'Mettre à jour' : 'Publier l\'annonce' }}
                 </button>

@@ -4,6 +4,8 @@ use app\core\Router;
 use app\controller\AuthController;
 use app\controller\back\CompanyController;
 use app\controller\back\UserController;
+use app\controller\back\AnnonceController;
+use app\controller\back\DashboardController;
 
 include __DIR__ . '/../vendor/autoload.php';
 
@@ -17,8 +19,8 @@ $router->post("/login" , [AuthController::class , "loginCheck"]);
 
 $router->get("/logout" , [AuthController::class , "logout"]);
 
-$router->get("/admin/dashboard" , [AuthController::class , "renderDashboard"]);
-$router->get("/admin/posts" , [AuthController::class , "renderPosts"]);
+$router->get("/admin/dashboard" , [DashboardController::class , "renderDashboard"]);
+
 $router->get("/admin/users" , [UserController::class , "renderUsers"]);
 
 $router->get("/admin/companies" , [CompanyController::class , "renderCompanies"]);
@@ -28,7 +30,9 @@ $router->post("/admin/company/edit" , [CompanyController::class , "renderCompany
 $router->post("/admin/company/saveEdit" , [CompanyController::class , "editCompany"]);
 $router->post("/admin/company/delete" , [CompanyController::class , "deleteCompany"]);
 
-$router->post("/admin/post/create" , []);
+
+$router->get("/admin/posts" , [AnnonceController::class , "renderPosts"]);
+$router->get("/admin/post/create" , [AnnonceController::class , "renderPostForm"]);
 
 $router->get("/user/home" , [AuthController::class , "renderHome"]);
 $router->get("/user/postDetails" , [AuthController::class , "renderPostDetails"]);
