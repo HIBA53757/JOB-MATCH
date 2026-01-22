@@ -32,6 +32,7 @@ $router->post("/admin/company/delete" , [CompanyController::class , "deleteCompa
 
 
 $router->get("/admin/posts" , [AnnonceController::class , "renderPosts"]);
+$router->get("/admin/posts/archived" , [AnnonceController::class , "renderPostsArchived"]);
 $router->get("/admin/post/create" , [AnnonceController::class , "renderPostForm"]);
 
 $router->get("/user/home" , [AuthController::class , "renderHome"]);

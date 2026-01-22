@@ -11,10 +11,10 @@
     <div class="mb-4 border-b border-gray-200">
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
             <li class="mr-2">
-                <a href="?status=active" class="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active">Actives</a>
+                <a href="/admin/posts" class="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active">Actives</a>
             </li>
             <li class="mr-2">
-                <a href="?status=archived" class="inline-block p-4 text-gray-500 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg">Archivées</a>
+                <a href="/admin/posts/archived" class="inline-block p-4 text-gray-500 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg">Archivées</a>
             </li>
         </ul>
     </div>
@@ -35,23 +35,23 @@
                     {% for annonce in annonces %}
                         <tr>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap font-bold">Dev Symfony</p>
-                                <p class="text-gray-500 text-xs">Casablanca</p>
+                                <p class="text-gray-900 whitespace-no-wrap font-bold">{{annonce.title}}</p>
+                                <p class="text-gray-500 text-xs">{{annonce.location}}</p>
                             </td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">Orange</p>
+                                <p class="text-gray-900 whitespace-no-wrap">{{annonce.name}}</p>
                             </td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                     <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                    <span class="relative">CDI</span>
+                                    <span class="relative">{{annonce.contract_type}}</span>
                                 </span>
                             </td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">Active</td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
                                 <button class="text-blue-600 hover:text-blue-900 mr-2"><i class="fas fa-edit"></i></button>
                                 <form action="/admin/post/archive" method="POST" class="inline">
-                                    <input type="hidden" name="id" value="1">
+                                    <input type="hidden" name="id" value="{{annonce.id}}">
                                     <button class="text-red-600 hover:text-red-900" onclick="return confirm('Archiver ?')"><i class="fas fa-archive"></i></button>
                                 </form>
                             </td>
