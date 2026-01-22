@@ -1,43 +1,63 @@
 {% extends "layouts/layout_front.html.twig" %}
 
 {% block content %}
-    <!-- HERO / SEARCH -->
-    <section class="relative mb-12">
-        <div class="bg-gradient-to-br from-purple-700 via-blue-600 to-indigo-700 rounded-3xl p-10 text-white shadow-2xl">
-            <h1 class="text-4xl font-extrabold mb-3">
-                Trouvez votre stage ou emploi
-            </h1>
-            <p class="text-lg opacity-90 mb-8">
-                Parcourez les offres exclusives du réseau YouCode
-            </p>
+   <!-- HERO / SEARCH -->
+<section class="relative mb-12">
+    <div class="bg-gradient-to-br from-purple-700 via-blue-600 to-indigo-700 rounded-3xl p-10 text-white shadow-2xl">
+        <h1 class="text-4xl font-extrabold mb-3">
+            Trouvez votre stage ou emploi
+        </h1>
+        <p class="text-lg opacity-90 mb-8">
+            Parcourez les offres exclusives du réseau YouCode
+        </p>
 
-            <!-- Search bar without button -->
-            <form id="searchForm" class="max-w-3xl">
-                <div class="relative flex flex-col md:flex-row gap-4">
-                    <div class="relative flex-1">
-                        <span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
-                            <i class="fas fa-search"></i>
-                        </span>
-                        <input
-                            type="text"
-                            placeholder="Titre, compétence, entreprise..."
-                            class="w-full pl-12 pr-4 py-4 rounded-xl text-gray-800 bg-white/95 backdrop-blur focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
-                        >
-                    </div>
+        <!-- Search bar without button -->
+        <form id="searchForm" class="max-w-3xl">
+            <div class="relative flex flex-col md:flex-row gap-4">
 
-                    <select class="py-4 px-4 rounded-xl text-gray-800 bg-white/95 backdrop-blur focus:outline-none focus:ring-2 focus:ring-purple-400 transition">
-                        <option value="">Tous les contrats</option>
-                        <option value="">.</option>
-                     
-                    </select>
+                <!-- KEYWORD -->
+                <div class="relative flex-1">
+                    <span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input
+                        type="text"
+                        name="keyword"
+                        id="keyword"
+                        placeholder="Titre, compétence, entreprise..."
+                        class="w-full pl-12 pr-4 py-4 rounded-xl text-gray-800 bg-white/95 backdrop-blur focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+                    >
                 </div>
 
-                <p class="text-sm mt-3 opacity-80">
-                    La recherche se lance automatiquement pendant la saisie
-                </p>
-            </form>
-        </div>
-    </section>
+                <!-- CONTRACT FILTER -->
+                <select
+                    name="contract"
+                    id="contract"
+                    class="py-4 px-4 rounded-xl text-gray-800 bg-white/95 backdrop-blur focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+                >
+                    <option value="">Tous les contrats</option>
+                    <option value="Stage">Stage</option>
+                    <option value="CDI">CDI</option>
+                    <option value="CDD">CDD</option>
+                </select>
+
+            </div>
+
+            <p class="text-sm mt-3 opacity-80">
+                La recherche se lance automatiquement pendant la saisie
+            </p>
+        </form>
+    </div>
+</section>
+
+<!-- RESULTS -->
+<div id="offersContainer">
+    {% include 'front/partials/offers.twig' %}
+</div>
+
+<!-- JS -->
+<script src="/public/js/search.js"></script>
+
 
     <!-- CONTENT -->
     <div class="flex flex-col md:flex-row gap-10">
