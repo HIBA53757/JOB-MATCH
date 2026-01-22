@@ -50,8 +50,8 @@ $router->post("/admin/post/saveEdit" , [AnnonceController::class , "editPost"]);
 $router->post("/admin/post/archive" , [AnnonceController::class , "archivePost"]);
 
 $router->get("/user/home" , [HomeController::class , "renderHome"]);
-$router->post("/user/postDetails" , [AuthController::class , "renderPostDetails"]);
-$router->post("/user/companyDetails" , [AuthController::class , "renderCompanyDetails"]);
+$router->post("/user/postDetails" , [HomeController::class , "renderPostDetails"]);
+$router->post("/user/companyDetails" , [HomeController::class , "renderCompanyDetails"]);
 
 
 $router->get("/user/{id}", [AuthController::class, "find"]);
