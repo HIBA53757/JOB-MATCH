@@ -195,20 +195,4 @@ class AuthController extends baseController
         exit;
     }
 
-    public function renderPostDetails(){
-        echo $_POST['annonce_id'];
-        if($this->session->get('user_role') !== "APPRENANT"){
-            $this->view->redirect('/login');
-        }
-        $this->render("front/postDetails", []);
-    }
-    
-    public function renderCompanyDetails(){
-        echo $_POST['company_id'];
-        if($this->session->get('user_role') !== "APPRENANT"){
-            $this->view->redirect('/login');
-        }
-        $this->render("front/companyDetails", []);
-    }
-
 }
