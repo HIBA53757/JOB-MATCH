@@ -3,37 +3,22 @@
 namespace app\controller\front;
 
 use app\core\baseController;
-use app\models\home;
+use app\models\Annonce;
 
-class homeControllerController extends baseController
-{
-    public function index()
+class HomeController extends baseController
+{       
+    protected Annonce $annonce;
+
+    public function __construct()
     {
-        // Fake data pour test
-        $annonces = [
-            [
-                'id' => 1,
-                'title' => 'Développeur PHP',
-                'description' => 'Développement de sites web',
-                'contract_type' => 'CDI',
-                'location' => 'Casablanca',
-                'skills' => 'PHP, MySQL',
-                'company_name' => 'YouCode',
-                'image' => 'default.png'
-            ],
-            [
-                'id' => 2,
-                'title' => 'Designer UI/UX',
-                'description' => 'Création d’interfaces modernes',
-                'contract_type' => 'Stage',
-                'location' => 'Rabat',
-                'skills' => 'Figma, Photoshop',
-                'company_name' => 'TechCorp',
-                'image' => 'default.png'
-            ]
-        ];
-
-        // Passer les annonces à Twig
-        $this->render('front/jobs/index', ['annonces' => $annonces]);
+        parent::__construct();
+        $this->annonce = new Annonce();
+    }
+        public function renderHome(){
+        if($this->session->get('user_role') !== "APPRENANT"){
+            $this->view->redirect('/login');
+        }
+        $annonces = $this->annonce->findWithJoin("*" , "company" , 'annonce.company_id = company.id AND annonce.deleted = 0' , "INNER");
+        $this->render("front/home", ['annonces' => $annonces]);
     }
 }

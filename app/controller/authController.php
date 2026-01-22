@@ -195,18 +195,13 @@ class AuthController extends baseController
         exit;
     }
 
-    public function renderHome(){
-        if($this->session->get('user_role') !== "APPRENANT"){
-            $this->view->redirect('/login');
-        }
-        $this->render("front/home", []);
-    }
     public function renderPostDetails(){
         if($this->session->get('user_role') !== "APPRENANT"){
             $this->view->redirect('/login');
         }
         $this->render("front/postDetails", []);
     }
+    
     public function renderCompanyDetails(){
         if($this->session->get('user_role') !== "APPRENANT"){
             $this->view->redirect('/login');

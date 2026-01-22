@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 use app\core\Router;
 use app\controller\AuthController;
@@ -6,10 +7,15 @@ use app\controller\back\CompanyController;
 use app\controller\back\UserController;
 use app\controller\back\AnnonceController;
 use app\controller\back\DashboardController;
+use app\controller\front\HomeController;
 
 include __DIR__ . '/../vendor/autoload.php';
 
 $router = Router::getRouter();
+
+if(!isset($_SESSION["user_id"])){
+    $_SERVER["REQUEST_URI"] = "/login";
+}
 
 $router->get("/register" , [AuthController::class , "renderRegister"]);
 $router->post("/register" , [AuthController::class , "createUser"]);
@@ -35,7 +41,7 @@ $router->get("/admin/posts" , [AnnonceController::class , "renderPosts"]);
 $router->get("/admin/posts/archived" , [AnnonceController::class , "renderPostsArchived"]);
 $router->get("/admin/post/create" , [AnnonceController::class , "renderPostForm"]);
 
-$router->get("/user/home" , [AuthController::class , "renderHome"]);
+$router->get("/user/home" , [HomeController::class , "renderHome"]);
 $router->get("/user/postDetails" , [AuthController::class , "renderPostDetails"]);
 $router->get("/user/companyDetails" , [AuthController::class , "renderCompanyDetails"]);
 
