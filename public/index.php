@@ -8,13 +8,17 @@ use app\controller\back\UserController;
 use app\controller\back\AnnonceController;
 use app\controller\back\DashboardController;
 use app\controller\front\HomeController;
+use app\models\Annonce;
 
 include __DIR__ . '/../vendor/autoload.php';
 
 $router = Router::getRouter();
 
-if(!isset($_SESSION["user_id"])){
+$isLogin = $_SESSION['user_id'] ?? null;
+
+if($_SERVER["REQUEST_URI"] === '/' && $isLogin === null){
     $_SERVER["REQUEST_URI"] = "/login";
+    
 }
 
 $router->get("/register" , [AuthController::class , "renderRegister"]);
@@ -40,6 +44,10 @@ $router->post("/admin/company/delete" , [CompanyController::class , "deleteCompa
 $router->get("/admin/posts" , [AnnonceController::class , "renderPosts"]);
 $router->get("/admin/posts/archived" , [AnnonceController::class , "renderPostsArchived"]);
 $router->get("/admin/post/create" , [AnnonceController::class , "renderPostForm"]);
+$router->post("/admin/post/save" , [AnnonceController::class , "createPost"]);
+$router->post("/admin/post/edit" , [AnnonceController::class , "renderPostFormEdit"]);
+$router->post("/admin/post/saveEdit" , [AnnonceController::class , "editPost"]);
+$router->post("/admin/post/archive" , [AnnonceController::class , "archivePost"]);
 
 $router->get("/user/home" , [HomeController::class , "renderHome"]);
 $router->get("/user/postDetails" , [AuthController::class , "renderPostDetails"]);

@@ -78,7 +78,7 @@ class CompanyController extends baseController
 
             if (!$this->security->verifyCSRFToken($tokenFromPost)) {
                 $errors =  ["csrf" => ["csrf token non valid!"]];
-                $this->render("auth/register", ["title" => "welcome to register page" ,
+                $this->render("back/companyForm", [
                                    "csrf_token" => $csrfToken,
                                    "errors" => $errors]);
                 die();
@@ -179,7 +179,7 @@ class CompanyController extends baseController
 
             if (!$this->security->verifyCSRFToken($tokenFromPost)) {
                 $errors =  ["csrf" => ["csrf token non valid!"]];
-                $this->render("auth/register", ["title" => "welcome to register page" ,
+                $this->render("back/companyForm", [
                                    "csrf_token" => $csrfToken,
                                    "errors" => $errors,
                                    "action" => "/admin/company/saveEdit"]);
