@@ -7,5 +7,4 @@ class user extends baseModel {
   protected  $table = 'users';
   
    }
-
 ?>

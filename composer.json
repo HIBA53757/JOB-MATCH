@@ -1,5 +1,5 @@
 {
-    "name": "hibat/php-routing-system",
+    "name": "pc/php-routing-system",
     "autoload": {
         "psr-4": {
             "app\\": "app/"
