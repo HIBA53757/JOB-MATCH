@@ -9,14 +9,14 @@
         </h1>
 
         {# L'action change dynamiquement selon si on est en Create ou Edit #}
-        <form action="{{ action|default('/admin/announcement/create') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form action="{{ action|default('/admin/post/save') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             
             {# Protection CSRF #}
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             {# Si c'est un Edit, on a besoin de l'ID #}
             {% if announcement %}
-                <input type="hidden" name="id" value="{{ announcement.id }}">
+                <input type="hidden" name="announce_id" value="{{ announcement.id }}">
             {% endif %}
 
             {# 1. Titre de l'annonce #}
@@ -68,7 +68,8 @@
                     <label for="location" class="block text-sm font-medium text-gray-700">Localisation</label>
                     <input type="text" name="location" id="location" 
                            value="{{ old.location | default(announcement.location) }}"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                           placeholder="ex: Nador, Oulad Botayaeb Sect 1">
                      {% if errors.location %}
                         <p class="text-red-500 text-xs mt-1">{{ errors.location[0] }}</p>
                     {% endif %}
@@ -78,11 +79,23 @@
             {# 5. Compétences (Skills) #}
             <div>
                 <label for="skills" class="block text-sm font-medium text-gray-700">Compétences requises</label>
-                <input type="text" name="skills" id="skills" 
-                       value="{{ old.skills | default(announcement.skills) }}"
-                       placeholder="Ex: PHP, SQL, Twig, Docker (séparés par des virgules)"
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
-                 {% if errors.skills %}
+                
+                <input type="hidden" name="skills" id="real_skills_input" value="{{ old.skills | default(announcement.skills) }}">
+
+                <div class="mt-2">
+                    <div class="flex flex-wrap items-center border border-gray-300 rounded-md p-2 space-x-2">
+                        <div id="tags-container" class="flex flex-wrap items-center gap-2">
+                            </div>
+                        <input
+                            id="tag-input" 
+                            type="text"
+                            placeholder="Ajouter une compétence + Entrée"
+                            class="flex-1 border-none outline-none focus:ring-0 w-min min-w-[100px]"
+                        />
+                        </div>
+                    <p id="error-message" class="mt-2 text-sm text-red-500 hidden">Max 10 compétences.</p>
+                </div>
+                {% if errors.skills %}
                     <p class="text-red-500 text-xs mt-1">{{ errors.skills[0] }}</p>
                 {% endif %}
             </div>
@@ -93,7 +106,7 @@
                 
                 {% if announcement.image and announcement.image != 'default_logo.png' %}
                     <div class="mb-2">
-                        <img src="/uploads/announcements/{{ announcement.image }}" alt="Current Image" class="h-20 w-20 object-cover rounded">
+                        <img src="/uploads/images/{{ announcement.image }}" alt="Current Image" class="h-20 w-20 object-cover rounded">
                         <p class="text-xs text-gray-500">Image actuelle</p>
                     </div>
                 {% endif %}
@@ -130,4 +143,67 @@
         </form>
     </div>
 </div>
+<script>
+  const input = document.getElementById('tag-input');
+  const tagsContainer = document.getElementById('tags-container');
+  const errorMessage = document.getElementById('error-message');
+  const hiddenInput = document.getElementById('real_skills_input'); // Input jdid
+
+  // Hna kanchofo wach deja kayna data (f hale Edit ola Error)
+  let tags = hiddenInput.value ? hiddenInput.value.split(',').filter(t => t.trim() !== '') : [];
+
+  // Bach i affichi tags li jayin mn database (ila kanou)
+  window.addEventListener('DOMContentLoaded', () => {
+      renderTags();
+  });
+
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && input.value.trim() !== '') {
+      event.preventDefault(); // Darori bach maydirch submit l form
+      const newTag = input.value.trim();
+      
+      if (tags.length >= 10) {
+        errorMessage.classList.remove('hidden');
+        return;
+      } else {
+        errorMessage.classList.add('hidden');
+      }
+
+      // Nta2kdo bli tag makaynach deja
+      if (!tags.includes(newTag)) {
+        tags.push(newTag);
+        updateHiddenInput(); // Update l input mkhabi
+        renderTags();
+      }
+      input.value = '';
+    }
+  });
+
+  const renderTags = () => {
+    tagsContainer.innerHTML = '';
+    tags.forEach((tag, index) => {
+      const tagElement = document.createElement('div');
+      tagElement.className = 'flex items-center bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-sm';
+      tagElement.innerHTML = `
+        <span>${tag}</span>
+        <button type="button" class="ml-2 text-blue-500 hover:text-blue-700 font-bold" onclick="removeTag(${index})">
+          &times;
+        </button>
+      `;
+      tagsContainer.appendChild(tagElement);
+    });
+  };
+
+  const removeTag = (index) => {
+    tags.splice(index, 1);
+    updateHiddenInput(); // Update l input mkhabi
+    renderTags();
+    errorMessage.classList.add('hidden');
+  };
+
+  // Hada howa l logic li kijam3 tags o kihothom f hidden input
+  const updateHiddenInput = () => {
+      hiddenInput.value = tags.join(','); // PHP,Java,Python
+  };
+</script>
 {% endblock %}
