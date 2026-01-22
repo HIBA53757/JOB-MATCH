@@ -70,14 +70,17 @@
             <article class="group bg-white p-6 rounded-2xl border border-gray-100 shadow hover:shadow-xl transition flex flex-col md:flex-row justify-between gap-6">
                 <div class="flex gap-5">
                     <img
-                        src="{{ annonce.image ?: 'https://ui-avatars.com/api/?name=' ~ annonce.company_name | url_encode ~ '&background=6D5BFF&color=fff' }}"
+                        src="/uploads/image/{{ annonce.image }}
                         class="w-16 h-16 rounded-xl object-cover shadow"
                         alt="Logo {{ annonce.company_name }}"
                     >
 
                     <div>
                         <h2 class="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition">
-                            <a href="/user/postDetails/{{ annonce.id }}">{{ annonce.title }}</a>
+                        <form method="POST" action="/user/companyDetails">
+                            <input type="hidden" name="company_id" value="{{ annonce.company_real_id }}">
+                            <button class="">{{ annonce.title }}</button>
+                        </form>
                         </h2>
 
                         <div class="text-sm text-gray-500 mt-2 flex flex-wrap gap-3">
@@ -104,13 +107,12 @@
                     <span class="text-xs text-gray-400 block mb-3">
                         Il y a {{ annonce.created_at|date("d/m/Y") }}
                     </span>
-                    <a
-                        href="/user/postDetails/{{ annonce.id }}"
-                        class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition"
-                    >
-                        Voir détails
+                    <form method="POST" action="/user/postDetails">
+                        <input type="hidden" name="annonce_id" value="{{ annonce.id }}">
+                        <button class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition">Voir détails
                         <i class="fas fa-arrow-right text-xs"></i>
-                    </a>
+                        </button>
+                    </form>
                 </div>
             </article>
             {% else %}

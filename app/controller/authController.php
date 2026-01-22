@@ -196,6 +196,7 @@ class AuthController extends baseController
     }
 
     public function renderPostDetails(){
+        echo $_POST['annonce_id'];
         if($this->session->get('user_role') !== "APPRENANT"){
             $this->view->redirect('/login');
         }
@@ -203,6 +204,7 @@ class AuthController extends baseController
     }
     
     public function renderCompanyDetails(){
+        echo $_POST['company_id'];
         if($this->session->get('user_role') !== "APPRENANT"){
             $this->view->redirect('/login');
         }

@@ -18,7 +18,7 @@ class HomeController extends baseController
         if($this->session->get('user_role') !== "APPRENANT"){
             $this->view->redirect('/login');
         }
-        $annonces = $this->annonce->findWithJoin("*" , "company" , 'annonce.company_id = company.id AND annonce.deleted = 0' , "INNER");
+        $annonces = $this->annonce->findWithJoin("annonce.*, company.name AS company_name, company.id AS company_real_id" , "company" , 'annonce.company_id = company.id AND annonce.deleted = 0' , "INNER");
         $this->render("front/home", ['annonces' => $annonces]);
     }
 }
