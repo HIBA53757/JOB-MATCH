@@ -4,36 +4,32 @@
     <div class="bg-white rounded-lg shadow-md p-8 mb-8 flex flex-col md:flex-row items-center gap-8">
         <img src="https://ui-avatars.com/api/?name=Capgemini&size=200" class="w-32 h-32 rounded-full border-4 border-gray-100 shadow" alt="Logo">
         <div class="text-center md:text-left">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Capgemini</h1>
-            <p class="text-gray-500 text-lg mb-4">Secteur : Services Numériques (ESN)</p>
-            <p class="text-gray-600 max-w-2xl">
-                Capgemini est un leader mondial, responsable et multiculturel, regroupant 300 000 personnes dans près de 50 pays.
-            </p>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">{{company.name}}</h1>
+            <p class="text-gray-500 text-lg mb-4">Secteur : {{company.secteur}}</p>
             <div class="mt-4 flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-500">
-                <span><i class="fas fa-map-marker-alt"></i> Siège : Paris, France (Bureaux au Maroc)</span>
-                <span><i class="fas fa-globe"></i> www.capgemini.com</span>
+                <span><i class="fas fa-map-marker-alt"></i> Siège : {{company.location}}</span>
+                <span><i class="fas fa-phone"></i> {{company.telephone}}</span>
             </div>
         </div>
     </div>
 
-    <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-blue-600 pl-4">Offres disponibles chez Capgemini</h2>
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-blue-600 pl-4">Offres disponibles chez {{company.name}}</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {% for annonce in annonces %}
         <div class="bg-white p-6 rounded-lg shadow hover:shadow-md border border-gray-100">
             <div class="flex justify-between items-start mb-2">
-                <h3 class="font-bold text-lg text-gray-800">Consultant Java Junior</h3>
-                <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">CDI</span>
+                <h3 class="font-bold text-lg text-gray-800">{{annonce.title}}</h3>
+                <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">{{annonce.contract_type}}</span>
             </div>
-            <p class="text-gray-500 text-sm mb-4">Rabat, Technopolis</p>
-            <a href="/post/1" class="text-blue-600 text-sm font-semibold hover:underline">Voir l'offre &rarr;</a>
+            <p class="text-gray-500 text-sm mb-4">{{annonce.location}}</p>
+            <form method="POST" action="/user/postDetails">
+                <input type="hidden" name="annonce_id" value="{{ annonce.id }}">
+                <button class="text-blue-600 text-sm font-semibold hover:underline">
+                    Voir détails &rarr;
+                </button>
+            </form>
         </div>
-         <div class="bg-white p-6 rounded-lg shadow hover:shadow-md border border-gray-100">
-            <div class="flex justify-between items-start mb-2">
-                <h3 class="font-bold text-lg text-gray-800">Stagiaire DevOps</h3>
-                <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded">Stage PFE</span>
-            </div>
-            <p class="text-gray-500 text-sm mb-4">Casablanca, Nearshore</p>
-            <a href="/post/2" class="text-blue-600 text-sm font-semibold hover:underline">Voir l'offre &rarr;</a>
-        </div>
+    {% endfor %}
     </div>
 {% endblock %}
