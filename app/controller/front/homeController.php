@@ -5,6 +5,7 @@ namespace app\controller\front;
 use app\core\baseController;
 use app\models\Annonce;
 use app\models\Company;
+use app\models\Application;
 
 class HomeController extends baseController
 {       
@@ -12,12 +13,15 @@ class HomeController extends baseController
 
     protected Company $company;
 
+    protected Application $application;
+
 
     public function __construct()
     {
         parent::__construct();
         $this->annonce = new Annonce();
         $this->company = new Company();
+        $this->application = new Application();
     }
         public function renderHome(){
         if($this->session->get('user_role') !== "APPRENANT"){
@@ -28,6 +32,9 @@ class HomeController extends baseController
     }
 
         public function renderPostDetails(){
+        $csrfToken = $this->security->generateCsrfToken();
+        $user_id = $this->session->get("user_id");
+        $result = $this->application->countWhere("user_id" , $user_id);
         $annonce_id = $_POST['annonce_id'];
         if($this->session->get('user_role') !== "APPRENANT"){
             $this->view->redirect('/login');
@@ -38,7 +45,7 @@ class HomeController extends baseController
         $skillsSparator = explode("," , $skills);
         
         $company = $this->company->find($annonce['company_id']);
-        $this->render("front/postDetails", ["annonce" => $annonce , "company" => $company , "skills" => $skillsSparator]);
+        $this->render("front/postDetails", ["annonce" => $annonce , "company" => $company , "skills" => $skillsSparator , "user_id" => $user_id , "csrf_token" => $csrfToken , "result" => $result]);
     }
     
     public function renderCompanyDetails(){
@@ -49,5 +56,20 @@ class HomeController extends baseController
         $company = $this->company->find($company_id);
         $annonces = $this->annonce->where("company_id" , $company_id);
         $this->render("front/companyDetails", ["company" => $company , "annonces" => $annonces]);
+    }
+
+    public function renderDemand(){
+        $user_id = $this->session->get("user_id");
+        $application = $this->application->findWithJoinStatique("SELECT 
+                                                    applications.*, annonce.title, annonce.contract_type, 
+                                                    company.name AS company_name, company.logo AS company_logo 
+	                                                FROM applications 
+                                                    INNER JOIN annonce ON applications.announcement_id = annonce.id 
+                                                    INNER JOIN company ON annonce.company_id = company.id
+                                                    WHERE applications.user_id = " . $user_id ." ;");
+        if($this->session->get('user_role') !== "APPRENANT"){
+            $this->view->redirect('/login');
+        }
+        $this->render("front/demand", ["myApplications" => $application]);
     }
 }

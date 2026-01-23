@@ -86,4 +86,68 @@
             </tbody>
         </table>
     </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden mt-10">
+        <div class="px-6 py-4 border-b border-gray-200 font-bold text-gray-700">
+            dernier Published utilisateurs demandes
+        </div>
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-100 text-gray-600 text-sm uppercase">
+                    <th class="px-6 py-3">Étudiant</th>
+                    <th class="px-6 py-3">Annonce</th>
+                    <th class="px-6 py-3">Entreprise</th>
+                    <th class="px-6 py-3">Localisation</th>
+                    <th class="px-6 py-3">Date de candidature</th>
+                    <th class="px-6 py-3">Statut</th>
+                    <th class="px-6 py-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                {% if applications is not empty %}
+                    {% for app in applications %}
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-6 py-4">{{app.user_name}}</td>
+                            <td class="px-6 py-4">{{app.title}}</td>
+                            <td class="px-6 py-4">{{app.company_name}}</td>
+                            <td class="px-6 py-4">{{app.annonce_location}}</td>
+                            <td class="px-6 py-4">{{app.created_at}}</td>
+                            <td class="px-6 py-4">{{app.status}}</td>
+                            <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                <form action="/admin/application/update" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <input type="hidden" name="id" value="{{app.id}}">
+                                    <input type="hidden" name="status" value="accepted">
+                                    <button type="submit" class="p-2 bg-green-100 text-green-600 rounded-full hover:bg-green-200 transition" title="Accepter">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </button>
+                                </form>
+
+                                <form action="/admin/application/update" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <input type="hidden" name="id" value="{{app.id}}">
+                                    <input type="hidden" name="status" value="rejected">
+                                    <button type="submit" class="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition" title="Refuser">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                            <p>Aucun message publié pour le moment</p>
+                            </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
