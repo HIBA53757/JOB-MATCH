@@ -41,3 +41,19 @@ CREATE TABLE `annonce` (
     
     FOREIGN KEY (`company_id`) REFERENCES `company`(`id`) ON DELETE CASCADE
 );
+
+CREATE TABLE applications (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `announcement_id` INT NOT NULL,
+    `motivation` TEXT NOT NULL,
+    `cv_path` VARCHAR(255) DEFAULT NULL,
+    `status` ENUM('pending', 'accepted', 'rejected') DEFAULT 'pending',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`announcement_id`) REFERENCES annonce(`id`) ON DELETE CASCADE,
+    
+    UNIQUE KEY unique_application (`user_id`, `announcement_id`)
+);

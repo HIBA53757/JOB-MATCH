@@ -92,7 +92,15 @@ abstract class baseModel
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_OBJ);
-}
+    }
+
+    public function findWithJoinStatique($sql) { // join statique
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
     
 
 }

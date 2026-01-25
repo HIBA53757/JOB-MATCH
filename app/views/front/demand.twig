@@ -1,0 +1,126 @@
+{% extends "layouts/layout_front.html.twig" %}
+
+{% block title %}Mes Candidatures{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 min-h-screen">
+    
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Mes Candidatures</h1>
+        <p class="text-gray-600 mt-2">Suivez l'état de vos demandes d'emploi en temps réel.</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        
+        {% if myApplications is empty %}
+            <div class="p-12 text-center">
+                <div class="inline-block p-4 rounded-full bg-gray-100 mb-4">
+                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Aucune candidature trouvée</h3>
+                <p class="text-gray-500 mt-2 mb-6">Vous n'avez postulé à aucune offre pour le moment.</p>
+                <a href="/user/home" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                    Parcourir les offres
+                </a>
+            </div>
+        {% else %}
+        
+            <div class="overflow-x-auto">
+                <table class="min-w-full leading-normal">
+                    <thead>
+                        <tr>
+                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Entreprise
+                            </th>
+                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Offre d'emploi
+                            </th>
+                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Date de candidature
+                            </th>
+                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Statut
+                            </th>
+                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in myApplications %}
+                        <tr class="hover:bg-gray-50 transition duration-150">
+                            
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 w-10 h-10">
+                                        {# Image par défaut si pas de logo #}
+                                        <img class="w-full h-full rounded-full object-cover border"
+                                             src="/uploads/logos/{{ app.company_logo}}"
+                                             alt="{{ app.company_name }}" />
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-900 whitespace-no-wrap font-semibold">
+                                            {{ app.company_name }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap font-medium">{{ app.title }}</p>
+                                <p class="text-gray-500 text-xs mt-1">{{ app.contract_type }}</p>
+                            </td>
+
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                    {{ app.created_at | date("d/m/Y") }}
+                                </p>
+                                <p class="text-gray-500 text-xs">à {{ app.created_at | date("H:i") }}</p>
+                            </td>
+
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                {% if app.status == 'accepted' %}
+                                    <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                        <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                        <span class="relative flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                            Acceptée
+                                        </span>
+                                    </span>
+                                {% elseif app.status == 'rejected' %}
+                                    <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                        <span aria-hidden="true" class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                        <span class="relative flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                            Refusée
+                                        </span>
+                                    </span>
+                                {% else %}
+                                    <span class="relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight">
+                                        <span aria-hidden="true" class="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
+                                        <span class="relative flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            En attente
+                                        </span>
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <form method="POST" action="/user/postDetails">
+                                        <input type="hidden" name="annonce_id" value="{{ app.announcement_id }}">
+                                        <button class="text-blue-600 hover:text-blue-900 hover:underline">Voir l'offre
+                                        </button>
+                                    </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -8,7 +8,8 @@ use app\controller\back\UserController;
 use app\controller\back\AnnonceController;
 use app\controller\back\DashboardController;
 use app\controller\front\HomeController;
-use app\models\Annonce;
+use app\controller\front\ApplicationController;
+use app\models\Application;
 
 include __DIR__ . '/../vendor/autoload.php';
 
@@ -49,9 +50,14 @@ $router->post("/admin/post/edit" , [AnnonceController::class , "renderPostFormEd
 $router->post("/admin/post/saveEdit" , [AnnonceController::class , "editPost"]);
 $router->post("/admin/post/archive" , [AnnonceController::class , "archivePost"]);
 
+$router->post("/user/post/motivation" , [ApplicationController::class , "saveMotivation"]);
+$router->post("/admin/application/update" , [DashboardController::class , "updateAction"]);
+
 $router->get("/user/home" , [HomeController::class , "renderHome"]);
 $router->post("/user/postDetails" , [HomeController::class , "renderPostDetails"]);
 $router->post("/user/companyDetails" , [HomeController::class , "renderCompanyDetails"]);
+$router->get("/user/MyDemand" , [DashboardController::class , "updateAction"]);
+$router->get("/user/MyDemandes" , [HomeController::class , "renderDemand"]);
 
 
 $router->get("/user/{id}", [AuthController::class, "find"]);
