@@ -62,7 +62,8 @@ $router->get("/user/MyDemandes" , [HomeController::class , "renderDemand"]);
 
 // $router->get("/user/{id}", [AuthController::class, "find"]);
 $router->get("/test", [AuthController::class, "allTest"]);
- 
+$router->get("/user/search-annonces", [HomeController::class, "search"]);
+
 
 $router->get("/404", function(){
     echo "404";

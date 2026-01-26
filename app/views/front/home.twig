@@ -9,18 +9,19 @@
 
 			<!-- Search bar -->
 			<form id="searchForm" class="max-w-3xl">
-				<div
-					class="relative flex flex-col md:flex-row gap-4">
-					<!-- KEYWORD -->
-					<div class="relative flex-1">
-						<span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
-							<i class="fas fa-search"></i>
-						</span>
-						<input type="text" name="keyword" id="keyword" placeholder="Titre, compétence, entreprise..." class="w-full pl-12 pr-4 py-4 rounded-xl text-gray-800 bg-white/95 backdrop-blur focus:outline-none focus:ring-2 focus:ring-purple-400 transition">
-					</div>
-				</div>
-				<p class="text-sm mt-3 opacity-80">La recherche se lance automatiquement pendant la saisie</p>
-			</form>
+    <div class="relative flex flex-col md:flex-row gap-4">
+        <!-- KEYWORD -->
+        <div class="relative flex-1">
+            <span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
+                <i class="fas fa-search"></i>
+            </span>
+            <input type="text" name="keyword" id="keyword" placeholder="Titre, compétence, entreprise..." 
+                   class="w-full pl-12 pr-4 py-4 rounded-xl text-gray-800 bg-white/95 backdrop-blur focus:outline-none focus:ring-2 focus:ring-purple-400 transition">
+        </div>
+    </div>
+    <p class="text-sm mt-3 opacity-80">La recherche se lance automatiquement pendant la saisie</p>
+</form>
+
 		</div>
 	</section>
 
@@ -120,22 +121,43 @@
 <script>
 const companyFilter  = document.getElementById('companyFilter');
 const contractFilter = document.getElementById('contractFilter');
+const keywordInput   = document.getElementById('keyword');
 const jobsContainer  = document.getElementById('jobsContainer');
 
+// FILTER AJAX
 function filterJobs() {
     const company  = companyFilter.value;
     const contract = contractFilter.value;
 
-   fetch(`/user/filter-annonces?company=${company}&contract=${contract}`)
-    .then(res => res.text())   
-    .then(html => {
-        jobsContainer.innerHTML = html;
-    });
+    fetch(`/user/filter-annonces?company=${encodeURIComponent(company)}&contract=${encodeURIComponent(contract)}`)
+        .then(res => res.text())
+        .then(html => {
+            jobsContainer.innerHTML = html;
+        });
 }
 
 companyFilter.addEventListener('change', filterJobs);
 contractFilter.addEventListener('change', filterJobs);
+
+// SEARCH AJAX (separate from filters)
+let searchTimeout;
+function searchJobs() {
+    const keyword = keywordInput.value.trim();
+
+    // avoid too many requests on typing
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        fetch(`/user/search-annonces?keyword=${encodeURIComponent(keyword)}`)
+            .then(res => res.text())
+            .then(html => {
+                jobsContainer.innerHTML = html;
+            });
+    }, 300); // wait 300ms after typing stops
+}
+
+keywordInput.addEventListener('input', searchJobs);
 </script>
+
 
 
 {% endblock %}
