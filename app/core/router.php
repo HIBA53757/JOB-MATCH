@@ -42,7 +42,7 @@ class Router
     // Dispatch the request
     public function dispatch()   
     {
-        $uri = $_SERVER['REQUEST_URI'] ?? '/';
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
         foreach (self::$routes[$method] as $path => $callback) {

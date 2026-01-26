@@ -60,7 +60,7 @@ $router->get("/user/MyDemand" , [DashboardController::class , "updateAction"]);
 $router->get("/user/MyDemandes" , [HomeController::class , "renderDemand"]);
 
 
-$router->get("/user/{id}", [AuthController::class, "find"]);
+// $router->get("/user/{id}", [AuthController::class, "find"]);
 $router->get("/test", [AuthController::class, "allTest"]);
  
 
@@ -68,7 +68,7 @@ $router->get("/404", function(){
     echo "404";
 });
 
-
+$router->get("/user/filter-annonces", [HomeController::class, "filter"]);
 
 
 $router->get('/test-all', callback: [AuthController::class, 'findByIdTest']);
