@@ -1,0 +1,27 @@
+{% for annonce in annonces %}
+<article class="group bg-white p-6 rounded-2xl border border-gray-100 shadow">
+    <div class="flex gap-5">
+        <img src="/uploads/images/{{ annonce.image }}" class="w-16 h-16 rounded-xl object-cover">
+
+        <div class="flex-1">
+            <h2 class="text-xl font-bold text-gray-800">
+                {{ annonce.title }}
+            </h2>
+
+            <div class="text-sm text-gray-500 mt-2 flex gap-3">
+                <span>{{ annonce.company_name }}</span>
+                <span>{{ annonce.location }}</span>
+                <span class="bg-purple-100 px-2 rounded">
+                    {{ annonce.contract_type }}
+                </span>
+            </div>
+
+            <p class="text-sm text-gray-600 mt-2">
+                {{ annonce.description }}
+            </p>
+        </div>
+    </div>
+</article>
+{% else %}
+<p class="text-gray-500">Aucune annonce trouvÃ©e.</p>
+{% endfor %}²

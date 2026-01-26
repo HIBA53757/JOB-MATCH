@@ -72,4 +72,37 @@ class HomeController extends baseController
         }
         $this->render("front/demand", ["myApplications" => $application]);
     }
+
+    public function filter()
+{
+    if ($this->session->get('user_role') !== "APPRENANT") {
+        http_response_code(403);
+        exit;
+    }
+
+    $company  = $_GET['company'] ?? null;
+    $contract = $_GET['contract'] ?? null;
+
+    $conditions = "annonce.company_id = company.id AND annonce.deleted = 0";
+
+    if (!empty($company)) {
+        $conditions .= " AND company.name = '$company'";
+    }
+
+    if (!empty($contract)) {
+        $conditions .= " AND annonce.contract_type = '$contract'";
+    }
+
+    $annonces = $this->annonce->findWithJoin(
+        "annonce.*, company.name AS company_name, company.id AS company_real_id",
+        "company",
+        $conditions,
+        "INNER"
+    );
+
+   
+    $this->render("front/partials/jobs", [
+        "annonces" => $annonces
+    ]);
+}
 }
