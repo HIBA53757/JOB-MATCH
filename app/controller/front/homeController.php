@@ -105,4 +105,36 @@ class HomeController extends baseController
         "annonces" => $annonces
     ]);
 }
+   public function search()
+{
+    if ($this->session->get('user_role') !== "APPRENANT") {
+        http_response_code(403);
+        exit;
+    }
+
+    $keyword = $_GET['keyword'] ?? '';
+
+    $conditions = "annonce.company_id = company.id AND annonce.deleted = 0";
+
+    if (!empty($keyword)) {
+        // basic search in title, skills, or description
+        $keywordEscaped = addslashes($keyword);
+        $conditions .= " AND (annonce.title LIKE '%$keywordEscaped%' 
+                             OR annonce.skills LIKE '%$keywordEscaped%' 
+                             OR annonce.description LIKE '%$keywordEscaped%')";
+    }
+
+    $annonces = $this->annonce->findWithJoin(
+        "annonce.*, company.name AS company_name, company.id AS company_real_id",
+        "company",
+        $conditions,
+        "INNER"
+    );
+
+    // render the same partial as filters
+    $this->render("front/partials/jobs", [
+        "annonces" => $annonces
+    ]);
+}
+
 }
