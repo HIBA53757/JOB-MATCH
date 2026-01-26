@@ -1,0 +1,24 @@
+{# <div class="bg-white p-4 rounded-lg shadow mb-6 flex gap-4">
+
+    <select id="companyFilter" class="border border-gray-300 rounded px-4 py-2">
+        <option value="">Toutes les entreprises</option>
+        {% set companies = [] %}
+        {% for announcement in announcements %}
+            {% if announcement.company not in companies %}
+                {% set companies = companies|merge([announcement.company]) %}
+                <option value="{{ announcement.company }}">{{ announcement.company }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <select id="contractFilter" class="border border-gray-300 rounded px-4 py-2">
+        <option value="">Tous les contrats</option>
+        {% set contracts = [] %}
+        {% for announcement in announcements %}
+            {% if announcement.contract_type not in contracts %}
+                {% set contracts = contracts|merge([announcement.contract_type]) %}
+                <option value="{{ announcement.contract_type }}">{{ announcement.contract_type }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+</div> #}
