@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS YouCodeJobDating;
 USE YouCodeJobDating;
 
-
+--@block
 CREATE TABLE users (
     `id` INT PRIMARY KEY AUTO_INCREMENT,
     `full_name` VARCHAR(255) NOT NULL,
@@ -41,6 +41,7 @@ CREATE TABLE `annonce` (
     
     FOREIGN KEY (`company_id`) REFERENCES `company`(`id`) ON DELETE CASCADE
 );
+--@block
 
 CREATE TABLE applications (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
